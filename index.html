@@ -11,6 +11,59 @@
 
     <title>Holiday Waves</title>
 
+    <style type="text/css">
+        #map {
+            height: 400px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+  
+        h1 {
+            margin: 0;
+            padding-top: 40px;
+            font-size: 3em;
+            text-align: center;
+            position: relative;
+            top: 50%;
+            font-family: 'Finger Paint', cursive;
+        }
+
+        .controls {
+            background-color: #fff;
+            border-radius: 2px;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            height: 29px;
+            margin-left: 17px;
+            margin-top: 10px;
+            outline: none;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 400px;
+        }
+
+        .controls:focus {
+            border-color: #4d90fe;
+        }
+
+        .title {
+            font-weight: bold;
+        }
+
+        #infowindow-content {
+            display: none;
+        }
+
+        #map #infowindow-content {
+            display: inline;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -33,11 +86,26 @@
         </nav>
     </div>
 
+    <div class="container">
+        <h1 class="first">If you dont't have a plan...</h1>
+    </div>
 
+    <div class="container">
+        <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+        <div id="map"></div>
+        <div id="infowindow-content">
+            <span id="place-name" class="title"></span><br> Place ID <span id="place-id"></span><br>
+            <span id="place-address"></span>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="second">...we bring one for you</h1>
+    </div>
 
     <div class="container">
         <div id="content">
-            <iframe src="https://www.google.com/maps/d/embed?mid=1-I-LjrPqir6RVRIE9tx5Lso-Zs_k-Qco" frameborder="0" id="iframe" width="100%" height="500"></iframe>
+            <iframe src="https://www.google.com/maps/d/embed?mid=1-I-LjrPqir6RVRIE9tx5Lso-Zs_k-Qco" frameborder="0" id="iframe" width="100%" height="100%" style="height: 300px;"></iframe>
         </div>
     </div>
 
@@ -47,13 +115,68 @@
         </div>
     </div>
 
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 53.0000, lng: 9.0000 },
+                zoom: 5
+            });
 
-    <script src="assets/js/maps.js"></script>
-    
+            var input = document.getElementById('pac-input');
+
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            var infowindow = new google.maps.InfoWindow();
+            var infowindowContent = document.getElementById('infowindow-content');
+            infowindow.setContent(infowindowContent);
+            var marker = new google.maps.Marker({
+                map: map
+            });
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
+
+            autocomplete.addListener('place_changed', function() {
+                infowindow.close();
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    return;
+                }
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                }
+                else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+
+
+                marker.setPlace({
+                    placeId: place.place_id,
+                    location: place.geometry.location
+                });
+                marker.setVisible(true);
+
+                infowindowContent.children['place-name'].textContent = place.name;
+                infowindowContent.children['place-id'].textContent = place.place_id;
+                infowindowContent.children['place-address'].textContent =
+                    place.formatted_address;
+                infowindow.open(map, marker);
+            });
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDocN_yNX3ngVZN4geicwvKwl6VFZKx6jc&libraries=places&callback=initMap" async defer></script>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="assets/js/maps.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-    
+
 </body>
 
 </html>
