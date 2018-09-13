@@ -67,6 +67,9 @@
 </head>
 
 <body>
+    
+    <!--Using bootstrap for the navbar-->
+    
     <div class="banner">
         <nav class="navbar fixed-top navbar-light my-navbar">
             <a class="navbar-brand" href="#">Holiday Waves</a>
@@ -90,6 +93,8 @@
         <h1 class="first">If you dont't have a plan...</h1>
     </div>
 
+    <!--The first reference to Google API-->
+
     <div class="container">
         <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
         <div id="map"></div>
@@ -103,9 +108,11 @@
         <h1 class="second">...we bring one for you</h1>
     </div>
 
+    <!--The second reference to Google API-->
+
     <div class="container">
         <div id="content">
-            <iframe src="https://www.google.com/maps/d/embed?mid=1-I-LjrPqir6RVRIE9tx5Lso-Zs_k-Qco" frameborder="0" id="iframe" width="100%" height="100%" style="height: 300px;"></iframe>
+            <iframe src="https://www.google.com/maps/d/embed?mid=1-I-LjrPqir6RVRIE9tx5Lso-Zs_k-Qco" frameborder="0" id="iframe" width="100%"></iframe>
         </div>
     </div>
 
@@ -114,7 +121,9 @@
             <p><a href="#">Click Holiday</a>. All rights reserved 2018.</p>
         </div>
     </div>
-
+    
+    <!--Using "places search box" from Google Maps Platform-->
+    
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -169,6 +178,8 @@
             });
         }
     </script>
+
+    <!--link for Bootstrap and Google API-->
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDocN_yNX3ngVZN4geicwvKwl6VFZKx6jc&libraries=places&callback=initMap" async defer></script>
 
