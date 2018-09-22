@@ -2,6 +2,10 @@ Holiday Waves
 ===
 #### A simple and easy way to find the next holiday.
 
+GitHub URL:
+---
+(https://github.com/RicardoIslan/HolidayWaves.git)
+
 Getting Started:
 ---
 #### It does not waste the time!
